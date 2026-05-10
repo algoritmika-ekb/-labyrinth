@@ -24,7 +24,6 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("🍬 КОНФЕТНЫЙ ЛАБИРИНТ - 2 УРОВНЯ 🍬")
 clock = pygame.time.Clock()
 
-# УРОВЕНЬ 1
 maze_level1 = [
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
     [1,0,0,0,0,3,1,0,0,0,0,0,0,0,1],
@@ -43,7 +42,6 @@ maze_level1 = [
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
 ]
 
-# УРОВЕНЬ 2 (СЛОЖНЕЕ, БОЛЬШЕ КОНФЕТ)
 maze_level2 = [
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
     [1,0,1,0,0,0,0,0,1,0,0,0,3,0,1],
@@ -168,7 +166,6 @@ def reset_game():
     exit_door = Exit(current_maze)
     victory = False
 
-# ЗАПУСК ИГРЫ
 current_level = 1
 current_maze = [row[:] for row in maze_level1]
 total_candies = count_candies(current_maze)
@@ -206,14 +203,11 @@ while running:
     exit_door.draw()
     player.draw()
     
-    # Счётчики
     candy_text = font.render(f"🍬 {candies_collected}/{total_candies}", True, YELLOW)
-    screen.blit(candy_text, (20, 20))
-    
+    screen.blit(candy_text, (20, 20))  
     level_text = font.render(f"УРОВЕНЬ {current_level}", True, WHITE)
     screen.blit(level_text, (WIDTH - 150, 20))
     
-    # Проверка победы на уровне
     if player.x == exit_door.x and player.y == exit_door.y and not victory and not level_complete:
         if candies_collected == total_candies:
             level_complete = True
@@ -222,8 +216,7 @@ while running:
             need_text = font.render(f"Собери ещё {total_candies - candies_collected} конфет!", True, RED)
             need_rect = need_text.get_rect(center=(WIDTH//2, HEIGHT - 50))
             screen.blit(need_text, need_rect)
-    
-    # Обработка завершения уровня
+
     if level_complete:
         big_font = pygame.font.Font(None, 56)
         text = big_font.render(f"УРОВЕНЬ {current_level} ПРОЙДЕН!", True, YELLOW)
@@ -242,12 +235,10 @@ while running:
                 level_complete = False
                 show_level_transition(2)
             else:
-                # ПОЛНАЯ ПОБЕДА В ИГРЕ
                 victory = True
                 victory_timer = pygame.time.get_ticks()
                 level_complete = False
     
-    # Полная победа (2 уровня пройдены)
     if victory:
         big_font = pygame.font.Font(None, 64)
         text = big_font.render("🍔 ПОЛНАЯ ПОБЕДА! 🍔", True, YELLOW)
@@ -263,8 +254,6 @@ while running:
         text2 = small_font.render("Нажми R чтобы начать заново", True, WHITE)
         text2_rect = text2.get_rect(center=(WIDTH//2, HEIGHT//2 + 40))
         screen.blit(text2, text2_rect)
-        
-        # Не выходим автоматически, ждём нажатия R
     
     pygame.display.flip()
     clock.tick(60)
